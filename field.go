@@ -3,16 +3,21 @@ package main
 import "fmt"
 
 func DrawField(field *[][]string, player *Player) {
+	buf := make([]rune, 0, len(*field)*len((*field)[0]))
 	for y := 0; y < len(*field); y++ {
 		for x := 0; x < len((*field)[0]); x++ {
 			if player.currentPosition.x == x && player.currentPosition.y == y {
-				fmt.Printf("\033[31m%s\033[0m", "☻")
+				//fmt.Printf("\033[31m%s\033[0m", "☻")
+				buf = append(buf, '☻')
 			} else {
-				fmt.Printf("%s", (*field)[y][x])
+				// fmt.Printf("%s", (*field)[y][x])
+				buf = append(buf, []rune((*field)[y][x])...)
 			}
 		}
-		fmt.Printf("\n")
+		// fmt.Printf("\n")
+		buf = append(buf, '\n')
 	}
+	fmt.Print(string(buf))
 }
 
 func GenerateField(height, width int) [][]string {
