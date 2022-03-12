@@ -1,4 +1,4 @@
-module test
+module github.com/koshelevdv/bouncing-ball-go
 
 go 1.17
 
