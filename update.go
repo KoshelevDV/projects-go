@@ -39,18 +39,25 @@ func Update() {
 	delay = Max(10, delay)
 
 	player := InitPlayer(Point{x: 1, y: 1})
+	player1 := InitPlayer(Point{x: width / 2, y: height / 2})
 
 	field := GenerateField(height, width)
+	buf := make([]rune, 0, len(field)*len(field[0]))
 	screen.Clear()
 	HideTerminalCursor()
 	for {
 		screen.MoveTopLeft()
 
-		DrawField(&field, &player)
+		DrawField(&field, buf, &player, &player1)
 		player.Next()
 		player.CollisionRectangle(&field)
 		player.Move()
-		player.ResetNextPositon()
-		time.Sleep(time.Millisecond * time.Duration(delay))
+		// player.ResetNextPositon()
+
+		player1.Next()
+		player1.CollisionRectangle(&field)
+		player1.Move()
+		// player1.ResetNextPositon()
+		time.Sleep(time.Second / time.Duration(delay))
 	}
 }
