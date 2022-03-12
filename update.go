@@ -11,14 +11,15 @@ import (
 
 func Update() {
 	args := os.Args[1:]
-	if len(args) != 3 {
-		fmt.Println("go run main.go <width> <height> <delay>")
+	if len(args) != 4 {
+		fmt.Println("go run main.go <width> <height> <count> <delay>")
 		return
 	}
 
 	var width int
 	var height int
 	var delay int
+	var count int
 
 	width, err := strconv.Atoi(args[0])
 	if err != nil {
@@ -36,28 +37,36 @@ func Update() {
 	if err != nil {
 		panic(err)
 	}
-	delay = Max(10, delay)
+	delay = Max(1, delay)
 
-	player := InitPlayer(Point{x: 1, y: 1})
-	player1 := InitPlayer(Point{x: width / 2, y: height / 2})
+	count, err = strconv.Atoi(args[3])
+	if err != nil {
+		panic(err)
+	}
+	count = Max(1, count)
+
+	players := make([]Player, 0, count)
+	addPlayers(&players, count, width, height)
 
 	field := GenerateField(height, width)
 	buf := make([]rune, 0, len(field)*len(field[0]))
+
 	screen.Clear()
 	HideTerminalCursor()
+
 	for {
 		screen.MoveTopLeft()
 
-		DrawField(&field, buf, &player, &player1)
-		player.Next()
-		player.CollisionRectangle(&field)
-		player.Move()
-		// player.ResetNextPositon()
+		DrawField(&field, buf, &players)
+		for p := range players {
+			players[p].Next()
+			// players[p].CollisionPlayer(&players)
+			players[p].CollisionRectangle(&field)
+			players[p].Move()
 
-		player1.Next()
-		player1.CollisionRectangle(&field)
-		player1.Move()
-		// player1.ResetNextPositon()
+		}
+		fmt.Println(time.Now().Clock())
+
 		time.Sleep(time.Second / time.Duration(delay))
 	}
 }
