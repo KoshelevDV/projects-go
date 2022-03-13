@@ -57,7 +57,7 @@ func (player *Player) CollisionRectangle(field *[][]string) {
 func addPlayers(players *[]Player, count, width, height int) {
 	rand.Seed(time.Now().Unix())
 
-	used := make([]Point, (width-1)*(height-1))
+	used := make([]Point, 0, (width-1)*(height-1))
 	for i := 0; i < count; i++ {
 		var pp Point
 	p:
