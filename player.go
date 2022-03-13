@@ -16,7 +16,8 @@ type Player struct {
 	nextPosition    Point
 	dirx            int
 	diry            int
-	speed           int
+	speedx          int
+	speedy          int
 	id              int
 }
 
@@ -29,27 +30,34 @@ func Init() func(Point) Player {
 			nextPosition:    cP,
 			dirx:            rand.Intn(1-(-1)+1) + (-1),
 			diry:            rand.Intn(1-(-1)+1) + (-1),
-			speed:           1,
+			speedx:          5,
+			speedy:          2,
 			id:              Id,
 		}
 	}
 }
 
 func (player *Player) Next() {
-	player.nextPosition.x = player.currentPosition.x + player.dirx*player.speed
-	player.nextPosition.y = player.currentPosition.y + player.diry*player.speed
+	player.nextPosition.x = player.currentPosition.x + player.dirx*player.speedx
+	player.nextPosition.y = player.currentPosition.y + player.diry*player.speedy
 }
 
 func (player *Player) Move() {
-	player.currentPosition.x += player.speed * player.dirx
-	player.currentPosition.y += player.speed * player.diry
+	player.currentPosition.x += player.speedx * player.dirx
+	player.currentPosition.y += player.speedy * player.diry
 }
 
 func (player *Player) CollisionRectangle(field *[][]string) {
 	if player.nextPosition.x <= 0 || player.nextPosition.x >= len((*field)[0])-1 {
+		for !(player.currentPosition.x <= 0 || player.currentPosition.x >= len((*field)[0])-1) {
+			player.currentPosition.x += 1 * player.dirx
+		}
 		player.dirx *= -1
 	}
 	if player.nextPosition.y <= 0 || player.nextPosition.y >= len(*field)-1 {
+		for !(player.currentPosition.y <= 0 || player.currentPosition.y >= len(*field)-1) {
+			player.currentPosition.y += 1 * player.diry
+		}
 		player.diry *= -1
 	}
 }
