@@ -12,7 +12,7 @@ import (
 func Update() {
 	args := os.Args[1:]
 	if len(args) != 4 {
-		fmt.Println("go run main.go <width> <height> <count> <delay>")
+		fmt.Println("go run main.go <width> <height> <delay> <count>")
 		return
 	}
 
